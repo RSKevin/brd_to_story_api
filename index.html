@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRD to User Stories Converter</title>
+</head>
+<body>
+    <h1>BRD to User Stories Converter</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="brdFile" name="file">
+        <button type="submit">Upload BRD</button>
+    </form>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            formData.append('file', document.getElementById('brdFile').files[0]);
+            try {
+                const response = await fetch('http://127.0.0.1:5000/upload_brd', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.blob();
+                const url = window.URL.createObjectURL(data);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'user_stories.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

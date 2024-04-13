@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated User Stories</title>
+</head>
+<body>
+    <h1>Generated User Stories</h1>
+    <div id="output"></div>
+
+    <script>
+        async function getUserStories() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/get_user_stories');
+                const data = await response.json();
+
+                if (response.ok) {
+                    let outputHtml = '<h2>User Stories:</h2>';
+                    for (const [component, story] of Object.entries(data)) {
+                        outputHtml += `<h3>${component}</h3>`;
+                        for (const [key, value] of Object.entries(story)) {
+                            outputHtml += `<p><strong>${key}:</strong> ${value}</p>`;
+                        }
+                    }
+                    document.getElementById('output').innerHTML = outputHtml;
+                } else {
+                    console.error('Failed to fetch user stories:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Call the function to fetch user stories when the page loads
+        window.onload = getUserStories;
+    </script>
+</body>
+</html>
