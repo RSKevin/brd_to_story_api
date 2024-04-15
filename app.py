@@ -193,7 +193,9 @@ def get_user_story():
         partial_variables={"format_instructions": format_instructions,"functionality":functionalities},
     )
 
-    user_stories_by_component = {}
+    #user_stories_by_component = {}
+
+    user_stories_by_component = []
 
     chain = LLMChain(llm=model, prompt=prompt, output_parser=output_parser)
     
@@ -212,7 +214,8 @@ def get_user_story():
             user_story["Linked Issues"] = ', '.join(user_story["Linked Issues"])
 
         # Add the generated user story to the dictionary under the component name key
-        user_stories_by_component[component_name] = user_story
+        #user_stories_by_component[component_name] = user_story
+        user_stories_by_component.append(user_story)
     
     
     if user_stories_by_component:
